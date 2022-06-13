@@ -1,0 +1,71 @@
+	
+	///memoization
+	int fun(int id,int t,vector<int>&arr,vector<vector<int>>&dp)
+	{
+	    if(id==0)
+	    {
+	       if(t%arr[0]==0)
+	       return t/arr[0];
+	       else
+	       return INT_MAX-1000;
+	    }
+	    if(dp[id][t]!=-1)return dp[id][t];
+	    
+	    int ntake=0+fun(id-1,t,arr,dp);
+	    
+	    int take=INT_MAX-1000;
+	    if(arr[id]<=t){
+	    take=1+fun(id,t-arr[id],arr,dp);
+	    }
+	   int c=min(take,ntake);
+	   
+	   return dp[id][t]=c;
+	}
+	int MinCoin(vector<int>arr, int t)
+	{
+	    int n=arr.size();
+	    
+	  vector<vector<int>>dp(n,vector<int>(t+1,0));
+	  /*  int a=fun(n-1,t,arr,dp);
+	    if(a>=INT_MAX-1000)
+	    return -1;
+	    else
+	    return a;*/
+	  //
+	  
+	  
+	  
+	  //tabulation 
+	  for(int i=0;i<=t;i++)
+	  {
+	      if(i%arr[0]==0)
+	      {
+	          dp[0][i]=i/arr[0];
+	          
+	      }
+	      else
+	      dp[0][i]=INT_MAX-1000;
+	      
+	  }
+	    
+	    for(int i=1;i<n;i++)
+	    {
+	       for(int w=0;w<=t;w++)
+	       {
+	           int ntake=0+dp[i-1][w];
+	           int take=INT_MAX-1000;
+	           if(arr[i]<=w)
+	           {
+	               take=1+dp[i][w-arr[i]];
+	           }
+	           
+	           dp[i][w]=min(take,ntake);
+	       }
+	    }
+	   
+	 int a=dp[n-1][t];
+	 if(a>=INT_MAX-1000)return -1;
+	 else
+	 return a;
+	     
+	}
